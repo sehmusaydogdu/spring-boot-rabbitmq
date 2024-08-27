@@ -1,13 +1,13 @@
 package com.rabbitmq.model;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import lombok.Data;
-
-@Data
-public class Customer implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
+@Getter
+@Setter
+@ToString
+public class Customer {
 	private long customerId;
 	private String message;
 }

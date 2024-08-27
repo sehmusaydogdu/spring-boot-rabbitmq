@@ -5,7 +5,9 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,14 +32,22 @@ public class RabbitMQConfig {
 
 	@Value("${spring.rabbitmq.notification.routekey}")
 	private String routingKey;
-	
-	// Exchange, Queue and RouteKey binding configuration
+
 	@Bean
-	public Binding binding() {
-		return BindingBuilder.bind(new Queue(queue)).to(new TopicExchange(exchange)).with(routingKey);
+	public Queue queue() {
+		return new Queue(queue, true);
 	}
 
-	// Producer connection configuration
+	@Bean
+	public TopicExchange exchange() {
+		return  new TopicExchange(exchange);
+	}
+
+	@Bean
+	public Binding binding() {
+		return BindingBuilder.bind(queue()).to(exchange()).with(routingKey);
+	}
+
 	@Bean
 	public CachingConnectionFactory connectionFactory() {
 		CachingConnectionFactory connectionFactory = new CachingConnectionFactory(hostname);
@@ -46,11 +56,22 @@ public class RabbitMQConfig {
 		return connectionFactory;
 	}
 	
-	// Consumer connection configuration
 	@Bean
 	public SimpleMessageListenerContainer container() {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory());
 		return container;
+	}
+
+	@Bean
+	public RabbitTemplate rabbitTemplate() {
+		final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
+		rabbitTemplate.setMessageConverter(converter());
+		return rabbitTemplate;
+	}
+
+	@Bean
+	public Jackson2JsonMessageConverter converter() {
+		return new Jackson2JsonMessageConverter();
 	}
 }
