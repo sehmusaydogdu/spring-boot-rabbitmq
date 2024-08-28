@@ -2,7 +2,7 @@ spring:
   application:
     name: spring-boot-rabbitmq
   rabbitmq:
-    hostname: localhost
+    hostname: rabbitmq
     username: guest
     password: guest
     notification:
