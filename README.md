@@ -6,7 +6,17 @@ I will setup local environment. I will use technology stack;
 * Docker Technology for RabbitMQ Setup
 * IntelLij IDEA
 
-Write the CLI command: <br/>
+(Alternative - 1) Write the CLI command: <br/>
+Start Command:
+```
+docker-compose up
+```
+Stop Command:
+```
+docker-compose down
+```
+
+(Alternative - 2) Write the CLI command for local environment debug<br/>
 
 ```
 docker pull rabbitmq:3-management
