@@ -22,8 +22,11 @@ public class ProducerController {
 	@Value("${spring.rabbitmq.notification.routekey}")
 	private String routingKey;
 
-	@Autowired
-	private RabbitTemplate rabbitTemplate;
+	private final RabbitTemplate rabbitTemplate;
+
+	public ProducerController(RabbitTemplate rabbitTemplate) {
+		this.rabbitTemplate = rabbitTemplate;
+	}
 
 	@PostMapping("/sendMessage")
 	public void sendMessage(@RequestBody Customer customer) {
