@@ -1,7 +1,7 @@
 # Spring Boot RabbitMQ Producer/Consumer Example
 I will setup local environment. I will use technology stack;
 
-* Spring Boot version v3.3.3
+* Spring Boot Version v4.0.0
 * Java 21
 * Docker Technology for RabbitMQ Setup
 * IntelLij IDEA
